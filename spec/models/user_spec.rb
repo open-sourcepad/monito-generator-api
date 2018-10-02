@@ -26,5 +26,9 @@ RSpec.describe User, type: :model do
     expect(user_fact).not_to be_valid
   end
 
+  it { should validate_uniqueness_of(:user_name) }
+
+  it { should validate_uniqueness_of(:email).ignoring_case_sensitivity }
+
   # Association tests go here
 end
