@@ -1,4 +1,7 @@
+require 'bcrypt'
 class User < ApplicationRecord
+  include BCrypt
+
   validates :user_name, presence: true, uniqueness: { case_sensitive: true }
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   validates :password_hash, presence: true
@@ -16,7 +19,7 @@ class User < ApplicationRecord
       pass_hash = Password.create(password)
       # BCrypt overrides ==
       # We can compare: HASH == plaintext
-      @user = User.new(user_name: params[:user_name], email: params[:email], password_hash: pass_hash)
+      @user = User.new(user_name: user_name, email: email, password_hash: pass_hash)
       @user.save!
       # registration succesful
       #binding.pry

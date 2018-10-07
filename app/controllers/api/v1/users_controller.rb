@@ -17,7 +17,6 @@ class Api::V1::UsersController < ApiController
     )
 
     # response can either be a returned @user or @errors
-    debugger
     render json: @response, except: [:id, :password_hash, :created_at, :updated_at]
   end
 end
