@@ -8,24 +8,15 @@ class Api::V1::UsersController < ApiController
   def new
   end
   def create
-    # pass the params to the register function of the User
-    @response = User.register(
-      params[:user_name],
-      params[:email],
-      params[:password],
-      params[:password_confirmation],
-    )
-
-    # response can either be a returned [@user,@auth_token] or @errors
-
-    if @response.count == 2
-      render json: { 'user': @response[0].slice(:user_name,:email), 'token': @response[1].slice(:expiry,:auth_hash) }
+    # pass the params to the error checker
+    errors = Users::ErrorChecker.check_errors(params)
+    if errors.empty?
+      user_store = Users::Builder.reg_and_login(params)
+      render json: user_store
     else
-      render json: @response, except: [:id, :created_at, :updated_at]
+      render json: errors
     end
-
   end
   def login
-
   end
 end
