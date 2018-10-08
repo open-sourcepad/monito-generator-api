@@ -16,7 +16,16 @@ class Api::V1::UsersController < ApiController
       params[:password_confirmation],
     )
 
-    # response can either be a returned @user or @errors
-    render json: @response, except: [:id, :password_hash, :created_at, :updated_at]
+    # response can either be a returned [@user,@auth_token] or @errors
+
+    if @response.count == 2
+      render json: { 'user': @response[0].slice(:user_name,:email), 'token': @response[1].slice(:expiry,:auth_hash) }
+    else
+      render json: @response, except: [:id, :created_at, :updated_at]
+    end
+
+  end
+  def login
+
   end
 end

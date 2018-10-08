@@ -1,11 +1,20 @@
 require 'bcrypt'
 class User < ApplicationRecord
   include BCrypt
+  include Authentication
 
   validates :user_name, presence: true, uniqueness: { case_sensitive: true }
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   validates :password_hash, presence: true
 
+  def login
+    auth_hash = gen_hash
+    # a week to be logged in
+    @auth_token = AuthToken.new(user_id: self.id, expiry: DateTime.now.next_day(7), auth_hash: auth_hash)
+    @auth_token.save!
+
+    @auth_token
+  end
 
   def self.register(user_name, email, password, password_confirmation)
     # checks if password and password_confirmation is the same
@@ -16,14 +25,15 @@ class User < ApplicationRecord
     email_bool = User.find_by(email: email).nil?
 
     if password_bool && user_name_bool && email_bool
-      pass_hash = Password.create(password)
-      # BCrypt overrides ==
+      pass_hash = Password.create(password) # BCrypt overrides ==
       # We can compare: HASH == plaintext
       @user = User.new(user_name: user_name, email: email, password_hash: pass_hash)
       @user.save!
       # registration succesful
       #binding.pry
-      @user
+      @auth_token = @user.login
+
+      [@user, @auth_token]
 
     else
       @errors = {}
