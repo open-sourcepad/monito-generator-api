@@ -8,6 +8,7 @@ module AuthTokens
                                  expiry: DateTime.now.next_day(7),
                                  auth_hash: fresh_hash)
       auth_token.save!
+      auth_token
     end
   end
 end
