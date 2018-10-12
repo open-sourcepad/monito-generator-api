@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_08_090637) do
+ActiveRecord::Schema.define(version: 2018_10_12_083520) do
 
   create_table "auth_tokens", force: :cascade do |t|
     t.integer "user_id"
@@ -20,12 +20,29 @@ ActiveRecord::Schema.define(version: 2018_10_08_090637) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "circles", force: :cascade do |t|
+    t.string "circle_name"
+    t.string "budget"
+    t.date "exchange_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+  end
+
+  create_table "circles_users", id: false, force: :cascade do |t|
+    t.integer "circle_id", null: false
+    t.integer "user_id", null: false
+    t.index ["circle_id"], name: "index_circles_users_on_circle_id"
+    t.index ["user_id"], name: "index_circles_users_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "user_name"
     t.string "email"
     t.string "password_hash"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "circle_id"
   end
 
 end

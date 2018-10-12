@@ -2,11 +2,6 @@ require 'bcrypt'
 
 class Api::V1::UsersController < ApiController
   include BCrypt
-
-  def index
-  end
-  def new
-  end
   def create
     # pass the params to the error checker
     errors = Users::ErrorChecker.check_errors(params)
