@@ -4,7 +4,8 @@ module Circles
       circle = Circle.new(circle_name: circle_params[:circle_name],
                           budget: circle_params[:budget],
                           exchange_date: circle_params[:exchange_date],
-                          user_id: request_valid)
+                          user_id: request_valid,
+                          owner: circle_params[:user_name])
       circle.save!
       circle
     end
