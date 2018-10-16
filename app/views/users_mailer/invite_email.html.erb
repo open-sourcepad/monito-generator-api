@@ -1,0 +1,19 @@
+<p>
+  You have been invited by <%= @circle['owner'] %> to join his/her <%= @circle['circle_name'] %>!
+</p>
+<p>
+  Please click the link below to join Monito-Generator
+  and participate in this monito-monita event to be held on:
+<%= @circle['exchange_date'] %>.
+</p>
+
+<a href=<%= @path %>>
+  <%= @path %>
+</a>
+
+<br>
+<br>
+
+<small>
+  Sent @ (<%= @date %>) by monito-emailer.
+</small>

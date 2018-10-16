@@ -10,7 +10,9 @@ Rails.application.routes.draw do
           post 'validate'
         end
       end
-      resources :circles
+      resources :circles do
+        post 'send_emails'
+      end
     end
   end
 end
