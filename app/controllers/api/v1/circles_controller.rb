@@ -12,6 +12,7 @@ class Api::V1::CirclesController < ApiController
       # request_valid returns the user's id if request was valid
       circle = Circles::Builder.save_circle(params, request_valid)
       Circles::ConnectionAdder.add_connection(circle['owner'],circle['id'])
+      UserCircles::CodenameBuilder.build_codename(circle['owner'], circle['id'], params['code_name'])
       render json: circle
     else
       render json: {"error": true}
@@ -20,8 +21,11 @@ class Api::V1::CirclesController < ApiController
 
   def show
     circle = Circle.find(params['id'])
+    usercircles = UserCircle.where(circle_id: params['id'])
+    accepted_users = User.where(id: usercircles.ids)
+    accepted_emails = accepted_users.pluck(:email)
 
-    render json: {'circle_found': circle.as_json(:only => [:id, :circle_name,:budget, :exchange_date, :owner])}
+    render json: {'circle_found': circle.as_json(:only => [:id, :circle_name,:budget, :exchange_date, :owner]), 'accepted_emails': accepted_emails}
   end
   def send_emails
     users = params['invitations']['users']
@@ -32,7 +36,6 @@ class Api::V1::CirclesController < ApiController
                    'exchange_date': circle['exchange_date'],
                    'owner': circle['owner']}
     emails_hash = {'existing_emails': []}
-
     users.each do |user|
       email = user['email']
       email_exists = Users::ExistChecker.check_user(email)

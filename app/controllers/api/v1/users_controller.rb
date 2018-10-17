@@ -9,6 +9,7 @@ class Api::V1::UsersController < ApiController
       user_store = Users::Builder.reg_and_login(params)
       if params['invited_by']
         Circles::ConnectionAdder.add_connection(params['user_name'], params['invited_by'])
+        UserCircles::CodenameBuilder.build_codename(params['user_name'], params['invited_by'], params['code_name'])
       end
 
       render json: user_store
