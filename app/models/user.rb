@@ -7,5 +7,6 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   validates :password_hash, presence: true
 
-  has_and_belongs_to_many :circles
+  has_many :user_circles
+  has_many :circles, :through => :user_circles
 end
