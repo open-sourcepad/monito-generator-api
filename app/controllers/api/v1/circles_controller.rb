@@ -22,7 +22,8 @@ class Api::V1::CirclesController < ApiController
   def show
     circle = Circle.find(params['id'])
     usercircles = UserCircle.where(circle_id: params['id'])
-    accepted_users = User.where(id: usercircles.ids)
+    usercircles_user_ids = usercircles.pluck(:user_id)
+    accepted_users = User.where(id: usercircles_user_ids)
     accepted_emails = accepted_users.pluck(:email)
 
     render json: {'circle_found': circle.as_json(:only => [:id, :circle_name,:budget, :exchange_date, :owner]), 'accepted_emails': accepted_emails}
