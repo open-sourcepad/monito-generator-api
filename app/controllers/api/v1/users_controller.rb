@@ -3,8 +3,14 @@ require 'bcrypt'
 class Api::V1::UsersController < ApiController
   include BCrypt
   def create
-    # pass the params to the error checker
-    errors = Users::ErrorChecker.check_errors(params)
+    # skip error check if user exists
+    if params['user_exists']
+      errors = []
+    else
+      # pass the params to the error checker
+      errors = Users::ErrorChecker.check_errors(params)
+    end
+
     if errors.empty?
       user_store = Users::Builder.reg_and_login(params)
       if params['invited_by']
@@ -17,6 +23,7 @@ class Api::V1::UsersController < ApiController
       render json: errors
     end
   end
+
   def login
   end
 end

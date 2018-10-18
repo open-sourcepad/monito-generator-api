@@ -40,11 +40,13 @@ class Api::V1::CirclesController < ApiController
     users.each do |user|
       email = user['email']
       email_exists = Users::ExistChecker.check_user(email)
+      # email_exists is a user_name of the returned email
+      user_name = email_exists
 
       if email_exists
-        emails_hash['existing_emails'].push(email)
+        UsersMailerWorker.perform_async(circle_hash, email, user_name)
       else
-        UsersMailerWorker.perform_async(circle_hash, email)
+        UsersMailerWorker.perform_async(circle_hash, email, '')
       end
     end
     render json: emails_hash
