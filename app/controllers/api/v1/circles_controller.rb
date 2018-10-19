@@ -26,7 +26,7 @@ class Api::V1::CirclesController < ApiController
     accepted_users = User.where(id: usercircles_user_ids)
     accepted_emails = accepted_users.pluck(:email)
 
-    render json: {'circle_found': circle.as_json(:only => [:id, :circle_name,:budget, :exchange_date, :owner]), 'accepted_emails': accepted_emails}
+    render json: {'circle_found': circle.as_json(:only => [:id, :circle_name,:budget, :exchange_date, :owner, :arrangement]), 'accepted_emails': accepted_emails}
   end
   def send_emails
     users = params['invitations']['users']
@@ -51,5 +51,16 @@ class Api::V1::CirclesController < ApiController
     end
     render json: emails_hash
 
+  end
+  def generate_monito
+    circle_id = params['circle_id']
+    arrange_arr = Circles::DrawRandomizer.randomize_draw(circle_id)
+    users = Circles::DrawRandomizer.get_arranged_users(circle_id)
+    users_ids = users.pluck(:id)
+
+    users_codenames = Circles::DrawRandomizer.get_codenames(circle_id, users_ids)
+    user_emails = users.pluck(:email)
+    binding.pry
+    render json: {codename_arr: users_codenames}
   end
 end

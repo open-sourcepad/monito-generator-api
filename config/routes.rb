@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       end
       resources :circles do
         post 'send_emails'
+        post 'generate_monito'
       end
     end
   end
