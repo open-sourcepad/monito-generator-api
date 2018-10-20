@@ -21,12 +21,25 @@ class Api::V1::CirclesController < ApiController
 
   def show
     circle = Circle.find(params['id'])
+
     usercircles = UserCircle.where(circle_id: params['id'])
     usercircles_user_ids = usercircles.pluck(:user_id)
+
     accepted_users = User.where(id: usercircles_user_ids)
     accepted_emails = accepted_users.pluck(:email)
+    out_hash = {'circle_found': circle.as_json(:only => [:id, :circle_name,:budget, :exchange_date, :owner, :arrangement]),
+                'accepted_emails': accepted_emails
+               }
+    if circle['arrangement']
+      users = Circles::DrawRandomizer.get_arranged_users(params['id'])
+      users_ids = users.pluck(:id)
 
-    render json: {'circle_found': circle.as_json(:only => [:id, :circle_name,:budget, :exchange_date, :owner, :arrangement]), 'accepted_emails': accepted_emails}
+      users_codenames = Circles::DrawRandomizer.get_codenames(params['id'], users_ids)
+      # a function to loop the codenames for easy display and pairing up
+      display_codenames = Circles::DrawRandomizer.display_codenames(users_codenames)
+      out_hash['codename_arr'] = display_codenames
+    end
+    render json: out_hash
   end
   def send_emails
     users = params['invitations']['users']
@@ -41,10 +54,10 @@ class Api::V1::CirclesController < ApiController
       email = user['email']
       email_exists = Users::ExistChecker.check_user(email)
       # email_exists is a user_name of the returned email
-      user_name = email_exists
+      user_find = email_exists
 
       if email_exists
-        UsersMailerWorker.perform_async(circle_hash, email, user_name)
+        UsersMailerWorker.perform_async(circle_hash, email, user_find['user_name'])
       else
         UsersMailerWorker.perform_async(circle_hash, email, '')
       end
@@ -60,7 +73,7 @@ class Api::V1::CirclesController < ApiController
 
     users_codenames = Circles::DrawRandomizer.get_codenames(circle_id, users_ids)
     user_emails = users.pluck(:email)
-    binding.pry
+
     render json: {codename_arr: users_codenames}
   end
 end
