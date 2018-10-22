@@ -14,6 +14,8 @@ class Api::V1::UsersController < ApiController
     if errors.empty?
       user_store = Users::Builder.reg_and_login(params)
       if params['invited_by']
+        circle_name = Circle.find(params['invited_by'])['circle_name']
+        user_store['circle_invitation'] = circle_name;
         Circles::ConnectionAdder.add_connection(params['user_name'], params['invited_by'])
         UserCircles::CodenameBuilder.build_codename(params['user_name'], params['invited_by'], params['code_name'])
       end
@@ -22,8 +24,5 @@ class Api::V1::UsersController < ApiController
     else
       render json: errors
     end
-  end
-
-  def login
   end
 end
