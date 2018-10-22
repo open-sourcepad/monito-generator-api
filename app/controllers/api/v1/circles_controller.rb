@@ -67,12 +67,19 @@ class Api::V1::CirclesController < ApiController
   end
   def generate_monito
     circle_id = params['circle_id']
+    circle = Circle.find(circle_id)
+    circle_hash = {'id': circle['id'],
+                   'circle_name': circle['circle_name'],
+                   'budget': circle['budget'],
+                   'exchange_date': circle['exchange_date'],
+                   'owner': circle['owner']}
     arrange_arr = Circles::DrawRandomizer.randomize_draw(circle_id)
     users = Circles::DrawRandomizer.get_arranged_users(circle_id)
     users_ids = users.pluck(:id)
 
     users_codenames = Circles::DrawRandomizer.get_codenames(circle_id, users_ids)
-    user_emails = users.pluck(:email)
+    users_emails = users.pluck(:email)
+    Users::EmailPairer.pair_users(circle_hash, users_codenames, users_emails)
 
     render json: {codename_arr: users_codenames}
   end
