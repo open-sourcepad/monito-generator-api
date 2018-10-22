@@ -17,7 +17,7 @@ class Api::V1::UsersController < ApiController
         circle_name = Circle.find(params['invited_by'])['circle_name']
         user_store['circle_invitation'] = circle_name;
         Circles::ConnectionAdder.add_connection(params['user_name'], params['invited_by'])
-        UserCircles::CodenameBuilder.build_codename(params['user_name'], params['invited_by'], params['code_name'])
+        UserCircles::EntryBuilder.build_entry(params['user_name'], params['invited_by'], params['code_name'], params['wishes'])
       end
 
       render json: user_store

@@ -12,7 +12,7 @@ class Api::V1::CirclesController < ApiController
       # request_valid returns the user's id if request was valid
       circle = Circles::Builder.save_circle(params, request_valid)
       Circles::ConnectionAdder.add_connection(circle['owner'],circle['id'])
-      UserCircles::CodenameBuilder.build_codename(circle['owner'], circle['id'], params['code_name'])
+      UserCircles::EntryBuilder.build_entry(circle['owner'], circle['id'], params['code_name'], params['wish_list'])
       render json: circle
     else
       render json: {"error": true}
@@ -34,7 +34,7 @@ class Api::V1::CirclesController < ApiController
       users = Circles::DrawRandomizer.get_arranged_users(params['id'])
       users_ids = users.pluck(:id)
 
-      users_codenames = Circles::DrawRandomizer.get_codenames(params['id'], users_ids)
+      users_codenames = Circles::DrawRandomizer.get_codenames_usercircles(params['id'], users_ids)[0]
       # a function to loop the codenames for easy display and pairing up
       display_codenames = Circles::DrawRandomizer.display_codenames(users_codenames)
       out_hash['codename_arr'] = display_codenames
@@ -76,10 +76,11 @@ class Api::V1::CirclesController < ApiController
     arrange_arr = Circles::DrawRandomizer.randomize_draw(circle_id)
     users = Circles::DrawRandomizer.get_arranged_users(circle_id)
     users_ids = users.pluck(:id)
-
-    users_codenames = Circles::DrawRandomizer.get_codenames(circle_id, users_ids)
+    users_entries = Circles::DrawRandomizer.get_codenames_usercircles(circle_id, users_ids)
+    users_codenames = users_entries[0]
+    users_circles = users_entries[1]
     users_emails = users.pluck(:email)
-    Users::EmailPairer.pair_users(circle_hash, users_codenames, users_emails)
+    Users::EmailPairer.pair_users(circle_hash, users_codenames, users_circles, users_emails)
 
     render json: {codename_arr: users_codenames}
   end

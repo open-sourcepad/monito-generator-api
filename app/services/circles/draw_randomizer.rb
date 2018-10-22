@@ -22,7 +22,7 @@ module Circles
       end
       arrange_users
     end
-    def self.get_codenames(circle_id, users_ids)
+    def self.get_codenames_usercircles(circle_id, users_ids)
       usercircles = []
       users_ids.each do |id|
         usercircle = UserCircle.find_by(circle_id: circle_id, user_id: id)
@@ -31,6 +31,7 @@ module Circles
         end
       end
       codenames = usercircles.pluck(:code_name)
+      [codenames, usercircles]
     end
     def self.display_codenames(codename_list)
       out = []

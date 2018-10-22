@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_19_110638) do
+ActiveRecord::Schema.define(version: 2018_10_22_130653) do
 
   create_table "auth_tokens", force: :cascade do |t|
     t.integer "user_id"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 2018_10_19_110638) do
     t.integer "user_id"
     t.integer "circle_id"
     t.string "code_name"
+    t.string "wishlist"
   end
 
   create_table "users", force: :cascade do |t|

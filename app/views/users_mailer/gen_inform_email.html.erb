@@ -2,7 +2,12 @@
   This is to notify you that <%= @circle['circle_name'] %> has started its pairing draw. You have drawn the codename: <%= @monito_codename %>! Don't forget to buy your gift(s) worth around <%= @circle['budget'] %> for him/her before the exchange date (<%= @circle['exchange_date'] %>). See you there!
 </p>
 
-<br>
+<p>
+  For a little "hint" on what to give, we provided your monito's/monita's wishlist:
+<% @wishlist.each_with_index do |wish, i| %>
+  <p><%= (i+1).to_s + '. ' %><%= wish %></p>
+<% end %>
+
 <br>
 
 <small>
