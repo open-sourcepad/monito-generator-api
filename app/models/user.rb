@@ -9,4 +9,5 @@ class User < ApplicationRecord
 
   has_many :user_circles
   has_many :circles, :through => :user_circles
+  has_many :user_events
 end

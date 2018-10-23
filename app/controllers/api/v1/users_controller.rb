@@ -18,6 +18,8 @@ class Api::V1::UsersController < ApiController
         user_store['circle_invitation'] = circle_name;
         Circles::ConnectionAdder.add_connection(params['user_name'], params['invited_by'])
         UserCircles::EntryBuilder.build_entry(params['user_name'], params['invited_by'], params['code_name'], params['wishes'])
+        UserEvents::EventHandler.add_event(params['user_name'], params['invited_by'], nil)
+
       end
 
       render json: user_store

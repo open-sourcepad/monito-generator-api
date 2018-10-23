@@ -14,6 +14,7 @@ Rails.application.routes.draw do
         post 'send_emails'
         post 'generate_monito'
       end
+      resources :user_events
     end
   end
 end
