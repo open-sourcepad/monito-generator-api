@@ -33,9 +33,13 @@ class Api::V1::CirclesController < ApiController
 
     accepted_users = User.where(id: usercircles_user_ids)
     accepted_emails = accepted_users.pluck(:email)
+    user_events = UserEvent.where(circle_id: params['id'])
+
     out_hash = {'circle_found': circle.as_json(:only => [:id, :circle_name,:budget, :exchange_date, :owner, :arrangement]),
-                'accepted_emails': accepted_emails
+                'accepted_emails': accepted_emails,
+                'user_events': user_events
                }
+
     if circle['arrangement']
       users = Circles::DrawRandomizer.get_arranged_users(params['id'])
       users_ids = users.pluck(:id)
