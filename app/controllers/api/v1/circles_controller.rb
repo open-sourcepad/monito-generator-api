@@ -13,7 +13,12 @@ class Api::V1::CirclesController < ApiController
       circle = Circles::Builder.save_circle(params, request_valid)
       Circles::ConnectionAdder.add_connection(circle['owner'],circle['id'])
       UserCircles::EntryBuilder.build_entry(circle['owner'], circle['id'], params['code_name'], params['wish_list'])
-      UserEvents::EventHandler.add_event(circle['owner'],circle['id'], nil)
+      UserEvents::EventHandler.add_event(circle['owner'], circle['id'], nil, nil)
+      if params['user_events']
+        params['user_events'].each_with_index do |user_event, i|
+          UserEvents::EventHandler.add_event(circle['owner'], circle['id'].to_i, params['user_events'][i]['userEvent'], params['user_events'][i]['exchange_date'])
+        end
+      end
       render json: circle
     else
       render json: {"error": true}
