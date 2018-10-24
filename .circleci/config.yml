@@ -33,7 +33,7 @@ jobs:
       - run:
           name: Setup env
           command: |
-            cp .circle/database.circle.yml config/database.yml
+            cp .circleci/database.circle.yml config/database.yml
 
       - run:
           name: Setup database
