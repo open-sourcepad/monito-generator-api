@@ -38,7 +38,7 @@ jobs:
       - run:
           name: Setup environment
           command: |
-            mv config/database.yml.sample config/database.yml
+            mv .circleci/database.yml.sample .circleci/database.yml
       - run:
           name: Setup database
           command: |
