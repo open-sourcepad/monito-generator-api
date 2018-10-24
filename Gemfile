@@ -62,8 +62,13 @@ group :test do
   gem 'selenium-webdriver'
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
-  gem 'codeclimate-test-reporter'
   gem 'simplecov', require:  false
+  gem 'shoulda'
+  gem 'rspec-rails'
+  gem 'database_cleaner', '~> 1.6.0'
+  gem 'fuubar'
+  gem 'codeclimate-test-reporter'
+  gem 'factory_girl_rails'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
