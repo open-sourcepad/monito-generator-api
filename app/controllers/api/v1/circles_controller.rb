@@ -65,9 +65,14 @@ class Api::V1::CirclesController < ApiController
       email_exists = Users::ExistChecker.check_user(email)
       # email_exists is a user_name of the returned email
       user_find = email_exists
-
       if email_exists
-        UsersMailerWorker.perform_async(circle_hash, email, user_find['user_name'])
+        user_in_circle = Users::ExistChecker.in_group(email, circle['id'])
+        if user_in_circle
+          emails_hash[:existing_emails].push(email)
+          next
+        else
+          UsersMailerWorker.perform_async(circle_hash, email, user_find['user_name'])
+        end
       else
         UsersMailerWorker.perform_async(circle_hash, email, '')
       end
