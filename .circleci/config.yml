@@ -2,53 +2,52 @@ version: 2
 jobs:
   build:
     working_directory: ~/monito-generator-api
-    general:
-      branches:
-        only:
-          - master
     docker:
-      - image: circleci/ruby:2.5.1-node-browsers
+      - image: circleci/ruby:2.5.1-stretch-node-browsers
         environment:
           RAILS_ENV: test
           PGHOST: 127.0.0.1
           CC_TEST_REPORTER_ID: f7bbd6ec72cd5d9e01ffe91b73477301e8f934f86ade7298162069bfc500f06e
-      - image: circleci/postgres:10.4-alpine-ram
+
+      - image: circleci/postgres:9.5-alpine-ram
         environment:
           POSTGRES_DB: monito_generator_test
           POSTGRES_USER: circleci
-      - image: redis
     steps:
       - checkout
 
       - type: cache-restore
         name: Restore bundle cache
-        key: spsuite-{{ checksum "Gemfile.lock" }}
+        key:  mg{{ checksum "Gemfile.lock" }}
 
       - run: bundle install --path vendor/bundle
 
       - type: cache-save
         name: Store bundle cache
-        key: spsuite-{{ checksum "Gemfile.lock" }}
+        key:  mg{{ checksum "Gemfile.lock" }}
         paths:
           - vendor/bundle
 
-      # Wait for DB
-      - run: dockerize -wait tcp://localhost:5432 -timeout 30s
+      - run: sudo apt-get install postgresql postgresql-contrib
 
       - run:
-          name: Setup environment
+          name: Setup env
           command: |
-            mv .circleci/database.yml.sample .circleci/database.yml
+            cp .circle/database.circle.yml config/database.yml
+
       - run:
           name: Setup database
           command: |
-            bundle exec rake db:test:prepare
-            # bundle exec rake db:seed
+            bundle exec rake db:create db:schema:load --trace
+            bundle exec rake db:create RAILS_ENV=test
+            bundle exec rake db:migrate RAILS_ENV=test
+
       - run:
           name: Setup Code Climate test-reporter
           command: |
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
+
       - run:
           name: Run tests
           command: |
