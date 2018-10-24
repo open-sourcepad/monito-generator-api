@@ -3,7 +3,19 @@
 </p>
 
 <p>
-  For a little "hint" on what to give, we provided your monito's/monita's wishlist:
+  <%= @events_title %>
+  <% @user_events.each do |event|%>
+    <% if event.desc %>
+      <p>
+        <span> <%= event.desc %> </span> &nbsp;
+        <span> (<%= event.exchange_date %>) </span>
+      </p>
+    <% end %>
+  <% end %>
+</p>
+
+<p>
+  For a little "hint" on what to give on the final exchange date, we provided your monito's/monita's wishlist:
 <% @wishlist.each_with_index do |wish, i| %>
   <p><%= (i+1).to_s + '. ' %><%= wish %></p>
 <% end %>

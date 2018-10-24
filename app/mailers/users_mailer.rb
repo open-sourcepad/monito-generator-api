@@ -8,6 +8,8 @@ class UsersMailer < ApplicationMailer
   end
   def gen_inform_email(circle, email, wishlist, monito_codename)
     @circle = circle
+    @user_events = UserEvent.where(circle_id: @circle['id']).order("exchange_date ASC")
+    @events_title = if (@user_events.length > 1) then "Mini Exchanges:" else "" end
     @monito_codename = monito_codename
     @date = Time.now.getutc
     @wishlist = JSON.parse wishlist
