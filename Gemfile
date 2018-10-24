@@ -68,7 +68,6 @@ group :test do
   gem 'database_cleaner', '~> 1.6.0'
   gem 'fuubar'
   gem 'codeclimate-test-reporter'
-  gem 'factory_girl_rails'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
