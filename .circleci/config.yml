@@ -1,0 +1,57 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/monito-generator-api
+    general:
+      branches:
+        only:
+          - master
+    docker:
+      - image: circleci/ruby:2.5.1-node-browsers
+        environment:
+          RAILS_ENV: test
+          PGHOST: 127.0.0.1
+          CC_TEST_REPORTER_ID: f7bbd6ec72cd5d9e01ffe91b73477301e8f934f86ade7298162069bfc500f06e
+      - image: circleci/postgres:10.4-alpine-ram
+        environment:
+          POSTGRES_DB: monito_generator_test
+          POSTGRES_USER: circleci
+      - image: redis
+    steps:
+      - checkout
+
+      - type: cache-restore
+        name: Restore bundle cache
+        key: spsuite-{{ checksum "Gemfile.lock" }}
+
+      - run: bundle install --path vendor/bundle
+
+      - type: cache-save
+        name: Store bundle cache
+        key: spsuite-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      # Wait for DB
+      - run: dockerize -wait tcp://localhost:5432 -timeout 30s
+
+      - run:
+          name: Setup environment
+          command: |
+            mv config/database.yml.sample config/database.yml
+      - run:
+          name: Setup database
+          command: |
+            bundle exec rake db:test:prepare
+            # bundle exec rake db:seed
+      - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - run:
+          name: Run tests
+          command: |
+            ./cc-test-reporter before-build
+            bundle exec rake
+            ./cc-test-reporter after-build --exit-code $?
