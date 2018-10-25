@@ -28,6 +28,20 @@ RSpec.describe 'Circles API' do
       resp = RequestHelpers.json response.body
       expect(resp).to include('success')
     end
+
+    it 'can display all circles in ascending' do
+      post '/api/circles', params: @circle_params
+      post '/api/circles', params: @circle_params
+      get '/api/circles/', params: {user_name: @creds[:user_name]}
+
+      resp = RequestHelpers.json response.body
+      date_arr = []
+      resp['circles'].each do |circle|
+        date_arr.push(circle['created_at'])
+      end
+      expect(date_arr.sort.reverse).to eq(date_arr)
+    end
+
     it 'can show existing circle' do
       post '/api/circles', params: @circle_params
       exist_circle_id = Circle.all.first.id
