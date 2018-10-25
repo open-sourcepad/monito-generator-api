@@ -1,4 +1,6 @@
 RSpec.describe 'Circles API' do
+  require 'sidekiq/testing'
+  Sidekiq::Testing.fake!
   before(:all) do
     @params = {email: 'sample@email.com',
                password: '123456'}
