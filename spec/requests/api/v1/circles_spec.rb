@@ -1,9 +1,9 @@
 RSpec.describe 'Circles API' do
   before(:all) do
-    params = {email: 'sample@email.com',
+    @params = {email: 'sample@email.com',
                password: '123456'}
-    AuthHelpers.create_user(params[:email], params[:password])
-    post '/api/sessions', params: params
+    AuthHelpers.create_user(@params[:email], @params[:password])
+    post '/api/sessions', params: @params
     resp = RequestHelpers.json response.body
     @creds = { user_name: resp['user_name'], auth_hash: resp['auth_hash'] }
     @circle_params = { circle_name: 'Sample Circle', 
@@ -33,6 +33,26 @@ RSpec.describe 'Circles API' do
       resp = RequestHelpers.json response.body
 
       expect(resp).to include('circle_found', 'accepted_emails')
+    end
+    it 'can invite other users' do
+      post '/api/circles', params: @circle_params
+      exist_circle_id = Circle.all.first.id
+      @circle_params['id'] = exist_circle_id
+      post "/api/circles/#{exist_circle_id}/send_emails",
+           params:{current_circle: @circle_params, 
+                   invitations: { users: [{email: "unique_email@email.com"}]}}
+      resp = RequestHelpers.json response.body
+      expect(resp['existing_emails']).to eq([])
+    end
+    it 'cannot invite in-circle users (and himself)' do
+      post '/api/circles', params: @circle_params
+      exist_circle_id = Circle.all.first.id
+      @circle_params['id'] = exist_circle_id
+      post "/api/circles/#{exist_circle_id}/send_emails",
+           params:{current_circle: @circle_params, 
+                   invitations: { users: [{email: @params[:email]}]}}
+      resp = RequestHelpers.json response.body
+      expect(resp['existing_emails']).to include(@params[:email])
     end
   end
   context 'user logged out' do

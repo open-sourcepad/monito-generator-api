@@ -60,7 +60,9 @@ class Api::V1::CirclesController < ApiController
                    'exchange_date': circle['exchange_date'],
                    'owner': circle['owner']}
     emails_hash = {'existing_emails': []}
+
     users.each do |user|
+
       email = user['email']
       email_exists = Users::ExistChecker.check_user(email)
       # email_exists is a user_name of the returned email
