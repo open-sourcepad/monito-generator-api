@@ -19,9 +19,9 @@ class Api::V1::CirclesController < ApiController
           UserEvents::EventHandler.add_event(circle['owner'], circle['id'].to_i, params['user_events'][i]['userEvent'], params['user_events'][i]['exchange_date'])
         end
       end
-      render json: circle
+      render json: {'success': true}
     else
-      render json: {"error": true}
+      render json: {'error': true}
     end
   end
 
