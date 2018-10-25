@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2018_10_23_095034) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "auth_tokens", force: :cascade do |t|
     t.integer "user_id"
     t.datetime "expiry"
@@ -29,13 +32,6 @@ ActiveRecord::Schema.define(version: 2018_10_23_095034) do
     t.integer "user_id"
     t.string "owner"
     t.string "arrangement"
-  end
-
-  create_table "circles_users", id: false, force: :cascade do |t|
-    t.integer "circle_id", null: false
-    t.integer "user_id", null: false
-    t.index ["circle_id"], name: "index_circles_users_on_circle_id"
-    t.index ["user_id"], name: "index_circles_users_on_user_id"
   end
 
   create_table "user_circles", force: :cascade do |t|
