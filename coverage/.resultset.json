@@ -76,6 +76,77 @@
         1,
         null
       ],
+      "/Users/jcgalbano/Desktop/monito-generator/monito-generator-api/app/controllers/api/v1/sessions_controller.rb": [
+        1,
+        1,
+        2,
+        2,
+        1,
+        1,
+        null,
+        1,
+        null,
+        null,
+        1,
+        null,
+        null,
+        0,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "/Users/jcgalbano/Desktop/monito-generator/monito-generator-api/app/controllers/api_controller.rb": [
+        1,
+        null
+      ],
+      "/Users/jcgalbano/Desktop/monito-generator/monito-generator-api/app/services/sessions/authenticator.rb": [
+        1,
+        1,
+        1,
+        1,
+        null,
+        1,
+        2,
+        2,
+        null,
+        2,
+        2,
+        2,
+        2,
+        null,
+        2,
+        null,
+        null,
+        1,
+        1,
+        1,
+        1,
+        1,
+        null,
+        null,
+        null
+      ],
+      "/Users/jcgalbano/Desktop/monito-generator/monito-generator-api/app/services/auth_tokens/builder.rb": [
+        1,
+        1,
+        1,
+        2,
+        null,
+        1,
+        2,
+        null,
+        null,
+        2,
+        2,
+        null,
+        null,
+        null
+      ],
       "/Users/jcgalbano/Desktop/monito-generator/monito-generator-api/app/controllers/api/v1/users_controller.rb": [
         1,
         null,
@@ -105,10 +176,6 @@
         3,
         null,
         null,
-        null
-      ],
-      "/Users/jcgalbano/Desktop/monito-generator/monito-generator-api/app/controllers/api_controller.rb": [
-        1,
         null
       ],
       "/Users/jcgalbano/Desktop/monito-generator/monito-generator-api/app/services/users/error_checker.rb": [
@@ -155,22 +222,6 @@
         1,
         null,
         1,
-        1,
-        1,
-        null,
-        null,
-        null
-      ],
-      "/Users/jcgalbano/Desktop/monito-generator/monito-generator-api/app/services/auth_tokens/builder.rb": [
-        1,
-        1,
-        1,
-        1,
-        null,
-        1,
-        1,
-        null,
-        null,
         1,
         1,
         null,
@@ -229,30 +280,6 @@
         0
       ],
       "/Users/jcgalbano/Desktop/monito-generator/monito-generator-api/app/controllers/application_controller.rb": [
-        0,
-        0
-      ],
-      "/Users/jcgalbano/Desktop/monito-generator/monito-generator-api/app/controllers/api/v1/sessions_controller.rb": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        null,
-        null,
-        0,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
         0,
         0
       ],
@@ -503,33 +530,6 @@
         0,
         null
       ],
-      "/Users/jcgalbano/Desktop/monito-generator/monito-generator-api/app/services/sessions/authenticator.rb": [
-        0,
-        0,
-        0,
-        0,
-        null,
-        0,
-        0,
-        0,
-        null,
-        0,
-        0,
-        0,
-        0,
-        null,
-        0,
-        0,
-        null,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
       "/Users/jcgalbano/Desktop/monito-generator/monito-generator-api/app/services/users/email_pairer.rb": [
         0,
         0,
@@ -579,6 +579,6 @@
         0
       ]
     },
-    "timestamp": 1540453821
+    "timestamp": 1540457304
   }
 }

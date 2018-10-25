@@ -5,6 +5,11 @@ RSpec.describe 'User Registration' do
               password: '123456',
               password_confirmation: '123456'}
   end
+
+  after(:all) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
   context 'it has valid form data' do
     it 'creates a new user' do
       post '/api/users', params: @params
