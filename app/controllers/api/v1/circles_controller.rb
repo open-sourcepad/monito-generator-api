@@ -19,9 +19,9 @@ class Api::V1::CirclesController < ApiController
           UserEvents::EventHandler.add_event(circle['owner'], circle['id'].to_i, params['user_events'][i]['userEvent'], params['user_events'][i]['exchange_date'])
         end
       end
-      render json: circle
+      render json: {'success': true}
     else
-      render json: {"error": true}
+      render json: {'error': true}
     end
   end
 
@@ -60,7 +60,9 @@ class Api::V1::CirclesController < ApiController
                    'exchange_date': circle['exchange_date'],
                    'owner': circle['owner']}
     emails_hash = {'existing_emails': []}
+
     users.each do |user|
+
       email = user['email']
       email_exists = Users::ExistChecker.check_user(email)
       # email_exists is a user_name of the returned email
