@@ -70,6 +70,16 @@ RSpec.describe 'Circles API' do
       resp = RequestHelpers.json response.body
       expect(resp['existing_emails']).to include(@params[:email])
     end
+    it 'generates codename(s) when monito-generated' do
+      post '/api/circles', params: @circle_params
+      exist_circle_id = Circle.all.first.id
+
+      path = "/api/circles/#{exist_circle_id}/generate_monito"
+      post path, params: {circle_id: exist_circle_id}
+      resp = RequestHelpers.json response.body
+
+      expect(resp['codename_arr']).not_to be_empty
+    end
   end
   context 'user logged out' do
     it 'cannot create circle' do
