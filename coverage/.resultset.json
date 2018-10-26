@@ -47,6 +47,11 @@
         1,
         1,
         1,
+        null,
+        1,
+        1,
+        1,
+        1,
         null
       ],
       "/Users/jcgalbano/Desktop/monito-generator/monito-generator-api/app/models/user_circle.rb": [
@@ -581,6 +586,6 @@
         0
       ]
     },
-    "timestamp": 1540555890
+    "timestamp": 1540561862
   }
 }
