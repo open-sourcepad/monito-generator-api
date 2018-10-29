@@ -3,7 +3,7 @@ module UserEvents
     def self.add_event(user_name, circle_id, desc, draw_date)
       user = User.find_by(user_name: user_name)
       circle = Circle.find(circle_id)
-      final_date = if desc then true else false end
+      final_date = if desc then false else true end
       exchange_date = if draw_date then draw_date else circle['exchange_date'] end
 
       user_event = UserEvent.new(user_id: user.id, circle_id: circle_id, exchange_date: exchange_date, desc: desc, deadline: final_date, circle_name: circle['circle_name'])
@@ -14,6 +14,9 @@ module UserEvents
       user = User.find_by(user_name: user_name)
       circles_ids = user.circles.pluck(:id)
       user_events = UserEvent.where(circle_id: circles_ids).order('exchange_date ASC')
+    end
+    def self.clear_sub_events(circle_id)
+      UserEvent.where(circle_id: circle_id, deadline: false).destroy_all
     end
   end
 end

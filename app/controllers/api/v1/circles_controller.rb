@@ -52,6 +52,53 @@ class Api::V1::CirclesController < ApiController
     render json: out_hash
   end
 
+  def edit
+    circle = Circle.find(params['id'])
+    owner = User.find(circle['user_id'])
+    owner_user_circle = UserCircle.find_by(user_id: owner['id'], circle_id: params['id'])
+    user_circles = UserCircle.where('circle_id': params['id'])
+    user_events = UserEvent.where('circle_id': params['id'])
+    render json: { 'circle': circle,
+                   'owner_user_circle': owner_user_circle,
+                   'user_circles': user_circles,
+                   'user_events': user_events }
+  end
+  def update
+    request_valid = Circles::Builder.validate(params['user_name'], params['auth_hash'])
+
+    circle = Circle.find(params['id'])
+    owner = User.find_by(user_name: params['user_name'])
+    owner_user_circle = UserCircle.find_by(user_id: owner.id, circle_id: circle.id)
+    circle_user_event = UserEvent.find_by(user_id: owner.id, circle_id: circle.id, deadline: true)
+    circle_user_event.update(circle_name: params['circle_name'],
+                             exchange_date: params['exchange_date'])
+
+    owner_user_circle.update(code_name: params['code_name'])
+
+    UserEvents::EventHandler.clear_sub_events(circle['id'])
+    if params['user_events']
+      params['user_events'].each_with_index do |user_event, i|
+        UserEvents::EventHandler.add_event(circle['owner'], circle['id'].to_i, params['user_events'][i]['userEvent'], params['user_events'][i]['exchange_date'])
+      end
+    end
+
+    circle.update(circle_name: params['circle_name'],
+                  budget: params['budget'],
+                  exchange_date: params['exchange_date'])
+
+    wishlist = []
+    params['wish_list'].each do |wish_holder|
+      wishlist.push(wish_holder['wish'])
+    end
+    owner_user_circle.update(wishlist: wishlist.to_s)
+
+    if request_valid
+      render json: {success: true}
+    else
+      render json: {error: true}
+    end
+  end
+
   def destroy
     circle = Circle.find(params['id'])
     circle.destroy
