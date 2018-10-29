@@ -51,6 +51,17 @@ class Api::V1::CirclesController < ApiController
     end
     render json: out_hash
   end
+
+  def destroy
+    circle = Circle.find(params['id'])
+    circle.destroy
+    user_circles = UserCircle.where('circle_id': params['id'])
+    user_circles.destroy_all
+    user_events = UserEvent.where('circle_id': params['id'])
+    user_events.destroy_all
+
+    render json:{'deleted_circle': circle['circle_name']}
+  end
   def send_emails
     users = params['invitations']['users']
     circle = params['current_circle']
