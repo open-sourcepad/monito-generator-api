@@ -91,4 +91,22 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+  config.action_mailer.delivery_method = :sendmail
+  # Defaults to:
+  # config.action_mailer.sendmail_settings = {
+  #   location: '/usr/sbin/sendmail',
+  #   arguments: '-i'
+  # }
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_options = {from: ENV['EMAIL']}
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+  address:              ENV['ADDRESS'],
+  port:                 587,
+  domain:               ENV['EMAIL_DOMAIN'],
+  user_name:            ENV['EMAIL_USERNAME'],
+  password:             ENV['EMAIL_PASSWORD'],
+  authentication:       'plain',
+  enable_starttls_auto: true  }
 end
