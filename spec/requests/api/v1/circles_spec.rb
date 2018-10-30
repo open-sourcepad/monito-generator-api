@@ -52,9 +52,11 @@ RSpec.describe 'Circles API' do
     end
     it 'can invite other users' do
       post '/api/circles', params: @circle_params
-      exist_circle_id = Circle.all.first.id
-      @circle_params['id'] = exist_circle_id
-      post "/api/circles/#{exist_circle_id}/send_emails",
+      circle = Circle.all.first
+      exist_circle_id = circle.id
+      exist_circle_hash_id = circle.hash_id
+      @circle_params['hash_id'] = exist_circle_hash_id
+      post "/api/circles/#{exist_circle_hash_id}/send_emails",
            params:{current_circle: @circle_params, 
                    invitations: { users: [{email: "unique_email@email.com"}]}}
       resp = RequestHelpers.json response.body
@@ -62,9 +64,11 @@ RSpec.describe 'Circles API' do
     end
     it 'cannot invite in-circle users (and himself)' do
       post '/api/circles', params: @circle_params
-      exist_circle_id = Circle.all.first.id
-      @circle_params['id'] = exist_circle_id
-      post "/api/circles/#{exist_circle_id}/send_emails",
+      circle = Circle.all.first
+      exist_circle_id = circle.id
+      exist_circle_hash_id = circle.hash_id
+      @circle_params['hash_id'] = exist_circle_hash_id
+      post "/api/circles/#{exist_circle_hash_id}/send_emails",
            params:{current_circle: @circle_params, 
                    invitations: { users: [{email: @params[:email]}]}}
       resp = RequestHelpers.json response.body
