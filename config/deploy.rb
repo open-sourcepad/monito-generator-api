@@ -3,7 +3,7 @@ set :repo_url, "git@github.com:open-sourcepad/monito-generator-api.git"
 set :bundle_without, [:development, :test]
 set :rvm_ruby_version, '2.5.1@monito-generator'
 set :rails_env, 'production'
-set :linked_files, %w{config/database.yml config/secrets.yml config/local_env.yml}
+set :linked_files, %w{config/database.yml config/secrets.yml config/local_env.yml config/application.yml}
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets}
 
 namespace :deploy do

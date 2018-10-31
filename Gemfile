@@ -65,6 +65,7 @@ group :development do
   gem 'capistrano-rvm','~> 0.1.2'
   gem 'capistrano3-puma','~> 3.1.0'
   gem 'capistrano-rake', require: false
+  gem 'capistrano-sidekiq'
 end
 
 group :test do

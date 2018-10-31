@@ -8,6 +8,7 @@ require 'capistrano/rvm'
 require 'capistrano/rake'
 require 'capistrano/rails/migrations'
 require 'capistrano/puma'
+require 'capistrano/sidekiq'
 # Load the SCM plugin appropriate to your project:
 #
 # require "capistrano/scm/hg"
