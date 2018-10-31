@@ -2,7 +2,7 @@ class Api::V1::CirclesController < ApiController
 
   def index
     user = User.find_by(user_name: params[:user_name])
-    circles = user.circles.order('created_at DESC')
+    circles = user.circles.page(params['page']).order('created_at DESC')
     render json: {'circles': circles}
   end
   def create

@@ -14,14 +14,14 @@
       <img src="./assets/0.10.2/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2018-10-30T20:58:49+08:00">2018-10-30T20:58:49+08:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2018-10-31T18:47:59+08:00">2018-10-31T18:47:59+08:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
         <div class="file_list_container" id="AllFiles">
   <h2>
     <span class="group_name">All Files</span>
-    (<span class="covered_percent"><span class="red">73.09%</span></span>
+    (<span class="covered_percent"><span class="red">73.16%</span></span>
      covered at
      <span class="covered_strength">
        <span class="green">
@@ -32,8 +32,8 @@
   <a name="AllFiles"></a>
   <div>
     <b>35</b> files in total.
-    <b>379</b> relevant lines. 
-    <span class="green"><b>277</b> lines covered</span> and
+    <b>380</b> relevant lines. 
+    <span class="green"><b>278</b> lines covered</span> and
     <span class="red"><b>102</b> lines missed </span>
   </div>
   <table class="file_list">
@@ -213,9 +213,9 @@
       <tr>
         <td class="strong"><a href="#6394e1a1932913ef63c742d6534d3b586c35ca63" class="src_link" title="app/models/circle.rb">app/models/circle.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>11</td>
-        <td>9</td>
-        <td>9</td>
+        <td>12</td>
+        <td>10</td>
+        <td>10</td>
         <td>0</td>
         <td>1.0</td>
       </tr>
@@ -506,19 +506,19 @@
           <div class="file_list_container" id="Models">
   <h2>
     <span class="group_name">Models</span>
-    (<span class="covered_percent"><span class="yellow">86.54%</span></span>
+    (<span class="covered_percent"><span class="yellow">86.79%</span></span>
      covered at
      <span class="covered_strength">
        <span class="green">
-         2.37
+         2.34
        </span>
     </span> hits/line)
   </h2>
   <a name="Models"></a>
   <div>
     <b>8</b> files in total.
-    <b>52</b> relevant lines. 
-    <span class="green"><b>45</b> lines covered</span> and
+    <b>53</b> relevant lines. 
+    <span class="green"><b>46</b> lines covered</span> and
     <span class="red"><b>7</b> lines missed </span>
   </div>
   <table class="file_list">
@@ -558,9 +558,9 @@
       <tr>
         <td class="strong"><a href="#6394e1a1932913ef63c742d6534d3b586c35ca63" class="src_link" title="app/models/circle.rb">app/models/circle.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>11</td>
-        <td>9</td>
-        <td>9</td>
+        <td>12</td>
+        <td>10</td>
+        <td>10</td>
         <td>0</td>
         <td>1.0</td>
       </tr>
@@ -1152,7 +1152,7 @@
         <li class="covered" data-hits="1" data-linenumber="5">
           <span class="hits">1</span>
           
-          <code class="ruby">    circles = user.circles.order(&#39;created_at DESC&#39;)</code>
+          <code class="ruby">    circles = user.circles.page(params[&#39;page&#39;]).order(&#39;created_at DESC&#39;)</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="6">
@@ -1578,7 +1578,7 @@
         <li class="missed" data-hits="0" data-linenumber="76">
           
           
-          <code class="ruby">    owner_user_circle.update(code_name: params[&#39;code_name&#39;]) </code>
+          <code class="ruby">    owner_user_circle.update(code_name: params[&#39;code_name&#39;])</code>
         </li>
       
         <li class="missed" data-hits="0" data-linenumber="77">
@@ -2746,7 +2746,7 @@
         <li class="missed" data-hits="0" data-linenumber="2">
           
           
-          <code class="ruby">  default from: ENV[&#39;EMAIL_USERNAME&#39;] + &#39;@&#39; + ENV[&#39;EMAIL_DOMAIN&#39;]</code>
+          <code class="ruby">  default :from =&gt; ENV[&#39;EMAIL&#39;]</code>
         </li>
       
         <li class="missed" data-hits="0" data-linenumber="3">
@@ -2978,8 +2978,8 @@
     <h3>app/models/circle.rb</h3>
     <h4><span class="green">100.0 %</span> covered</h4>
     <div>
-      <b>9</b> relevant lines. 
-      <span class="green"><b>9</b> lines covered</span> and
+      <b>10</b> relevant lines. 
+      <span class="green"><b>10</b> lines covered</span> and
       <span class="red"><b>0</b> lines missed.</span>
     </div>
   </div>
@@ -3002,52 +3002,58 @@
         <li class="covered" data-hits="1" data-linenumber="3">
           <span class="hits">1</span>
           
-          <code class="ruby">  has_many :user_circles</code>
+          <code class="ruby">  self.per_page = 8</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="4">
           <span class="hits">1</span>
           
-          <code class="ruby">  has_many :users, :through =&gt; :user_circles</code>
+          <code class="ruby">  has_many :user_circles</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="5">
           <span class="hits">1</span>
           
+          <code class="ruby">  has_many :users, :through =&gt; :user_circles</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="6">
+          <span class="hits">1</span>
+          
           <code class="ruby">  has_many :user_events</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="6">
+        <li class="never" data-hits="" data-linenumber="7">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="7">
+        <li class="covered" data-hits="1" data-linenumber="8">
           <span class="hits">1</span>
           
           <code class="ruby">  validates :circle_name, presence: true</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="8">
+        <li class="covered" data-hits="1" data-linenumber="9">
           <span class="hits">1</span>
           
           <code class="ruby">  validates :budget, presence: true</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="9">
+        <li class="covered" data-hits="1" data-linenumber="10">
           <span class="hits">1</span>
           
           <code class="ruby">  validates :exchange_date, presence: true</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="10">
+        <li class="covered" data-hits="1" data-linenumber="11">
           <span class="hits">1</span>
           
           <code class="ruby">  validates :owner, presence: true</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="11">
+        <li class="never" data-hits="" data-linenumber="12">
           
           
           <code class="ruby">end</code>
