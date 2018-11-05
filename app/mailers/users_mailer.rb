@@ -2,7 +2,7 @@ class UsersMailer < ApplicationMailer
   def invite_email(circle, email, user_name)
     @circle = circle
     @date = Time.now.getutc
-    domain = 'http://localhost:4200'
+    domain = ENV["CLIENT_URL"]
     @path = domain +'/register/'+ @circle['hash_id'].to_s + '/' + user_name
     mail(to: email, subject:"[Monito-Generator] You have been invited by #{@circle['owner']}!")
   end
